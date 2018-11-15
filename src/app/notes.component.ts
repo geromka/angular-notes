@@ -22,10 +22,10 @@ export class NotesComponent {
   text: string;
 
   constructor(private http: Http) {
-    // this.getNotes().then(notes => {
-    //   this.notes = notes;
-    //   console.log(notes);
-    // });
+    this.getNotes().then(notes => {
+      this.notes = notes;
+      console.log(notes);
+    });
   }
 
   add() {
@@ -43,6 +43,13 @@ export class NotesComponent {
       .toPromise()
       .then(response => response.json() as Note[]);
   }
+
+  // TODO:
+  /*
+  Additional tasks
+  1) Add «Send to top» button
+  2) Implement sending data to server to add a note
+  */
 }
 
 interface Note {
