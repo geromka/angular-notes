@@ -1,5 +1,7 @@
 import {Component} from '@angular/core';
 import { Http } from '@angular/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 // import 'rxjs/add/operator/toPromise';
 
 @Component({
@@ -13,16 +15,17 @@ export class NotesComponent {
     {text: 'Note two'}
   ];
   text: string;
+  section: string = 'Work';
 
   constructor(private http: Http) {
-    this.getNotes().then(notes => {
+    this.getNotes().subscribe(notes => {
       this.notes = notes;
       console.log(notes);
     });
   }
 
   add() {
-    const note = { text: this.text };
+    const note = { text: this.text, section: this.section };
     this.notes.push(note);
     this.text = '';
   }
@@ -31,10 +34,13 @@ export class NotesComponent {
     this.notes.splice(idx,1);
   }
 
-  getNotes(): Promise<Note[]> {
-    return this.http.get(this.notesUrl)
-      .toPromise()
-      .then(response => response.json() as Note[]);
+  getNotes(): Observable<Note[]> {
+    const params: URLSearchParams = new URLSearchParams();
+    params.set('section', this.section);
+    return this.http.get(this.notesUrl, {search: params})
+      .pipe(
+        map(response => response.json() as Note[])
+      );
   }
 
   // TODO:
