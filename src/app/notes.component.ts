@@ -4,8 +4,8 @@ import {Component} from '@angular/core';
   selector: 'notes',
   template: `Notes list:
     <ul>
-      <li *ngFor="let note of notes ">
-        {{note.text}}
+      <li *ngFor="let note of notes; let i=index">
+        {{note.text}} <button (click)="remove(i)">remove</button>
       </li>
     </ul>
     <textarea [(ngModel)]="text"></textarea>
@@ -22,6 +22,10 @@ export class NotesComponent {
     const note = { text: this.text };
     this.notes.push(note);
     this.text = '';
+  }
+
+  remove(idx) {
+    this.notes.splice(idx,1);
   }
 }
 
