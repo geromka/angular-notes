@@ -1,4 +1,6 @@
 import {Component} from '@angular/core';
+import { Http } from '@angular/http';
+// import 'rxjs/add/operator/toPromise';
 
 @Component({
   selector: 'notes',
@@ -12,11 +14,19 @@ import {Component} from '@angular/core';
     <button (click)="add()">Add</button>`
 })
 export class NotesComponent {
+  private notesUrl = 'http://localhost:8080/notes';
   notes: Note[] = [
     {text: 'Note one'},
     {text: 'Note two'}
   ];
   text: string;
+
+  constructor(private http: Http) {
+    // this.getNotes().then(notes => {
+    //   this.notes = notes;
+    //   console.log(notes);
+    // });
+  }
 
   add() {
     const note = { text: this.text };
@@ -26,6 +36,12 @@ export class NotesComponent {
 
   remove(idx) {
     this.notes.splice(idx,1);
+  }
+
+  getNotes(): Promise<Note[]> {
+    return this.http.get(this.notesUrl)
+      .toPromise()
+      .then(response => response.json() as Note[]);
   }
 }
 
