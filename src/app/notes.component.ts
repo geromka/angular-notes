@@ -4,14 +4,7 @@ import { Http } from '@angular/http';
 
 @Component({
   selector: 'notes',
-  template: `Notes list:
-    <ul>
-      <li *ngFor="let note of notes; let i=index">
-        {{note.text}} <button (click)="remove(i)">remove</button>
-      </li>
-    </ul>
-    <textarea [(ngModel)]="text"></textarea>
-    <button (click)="add()">Add</button>`
+  templateUrl: './notes.component.html'
 })
 export class NotesComponent {
   private notesUrl = 'http://localhost:8080/notes';
