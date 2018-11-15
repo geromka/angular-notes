@@ -12,6 +12,8 @@ export class SectionsComponent {
 
   sections: Section[];
 
+  activeSection: string;
+
   constructor(private http: Http) {
     this.readSections();
   }
@@ -19,6 +21,9 @@ export class SectionsComponent {
   readSections() {
     this.getSections().subscribe(sections => {
       this.sections = sections;
+      if (this.activeSection == null && this.sections.length > 0) {
+        this.showSection(this.sections[0]);
+      }
     });
   }
 
@@ -28,6 +33,10 @@ export class SectionsComponent {
         map(response => response.json() as Section[])
       );
     // TODO: !!! pipe was added to make example workable with import { Observable }
+  }
+
+  showSection(section: Section) {
+    this.activeSection = section.title;
   }
 }
 
